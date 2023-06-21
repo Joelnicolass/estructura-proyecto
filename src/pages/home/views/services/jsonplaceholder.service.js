@@ -10,3 +10,11 @@ export const getUserById = async (id) => {
 
   return data;
 };
+
+export const getUsers = async () => {
+  const { data } = await jsonPlaceHolderAPI.get(
+    `${jsonplaceholder_paths.users}`
+  );
+
+  return data;
+};

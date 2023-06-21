@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Image, Navbar, Text } from "@nextui-org/react";
 import { routes } from "../../core/router/appRouter";
@@ -6,7 +6,15 @@ import { routes } from "../../core/router/appRouter";
 import Links from "./Links";
 import logoSrc from "../../assets/logo.svg";
 
+import { useSWRConfig } from "swr";
+
 const Nav = () => {
+  const { cache } = useSWRConfig();
+
+  useEffect(() => {
+    //console.log(cache);
+  }, [cache]);
+
   return (
     <Navbar>
       <Navbar.Content>

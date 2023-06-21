@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 import useSWR from "swr";
-import { getUserById } from "./services/jsonplaceholder.service";
+import { getUsers } from "./services/jsonplaceholder.service";
+import SwiperGeneric from "../../../components/SwiperGeneric/SwiperGeneric";
+import { SwiperSlide } from "swiper/react";
+import CardGeneric from "../../../components/CardGeneric/CardGeneric";
+import { Modal, Spacer, Text } from "@nextui-org/react";
+import { useModal } from "../../../context/ModalContext";
 
 const HomeView = () => {
-  const [userId, setUserId] = useState(1);
+  const { data, error, isLoading } = useSWR(`getUsers`, () => getUsers());
 
-  const { data, error, isLoading } = useSWR(`getUserById${userId}`, () =>
-    getUserById(userId)
-  );
+  const { openModal } = useModal();
 
   return (
     <div>
@@ -18,27 +21,70 @@ const HomeView = () => {
         <meta name="description" content="Home" />
       </Helmet>
 
-      <h3>userId: {userId}</h3>
-
-      <div>
-        {
-          <div key={data?.id}>
-            <h1>{data?.name}</h1>
-            <h2>{data?.email}</h2>
-          </div>
-        }
+      <div
+        style={{
+          background: "red",
+          height: "80vh",
+        }}
+      >
+        <Text h1>Banner</Text>
       </div>
 
       <button
-        onClick={() =>
-          setUserId((prev) => {
-            if (prev === 9) return 1;
-            return prev + 1;
-          })
-        }
+        onClick={() => {
+          openModal({
+            content: (
+              <div>
+                <h1>Hola</h1>
+              </div>
+            ),
+            config: {
+              //config
+            },
+          });
+        }}
       >
-        cambiar usuario
+        open modal
       </button>
+
+      <Spacer y={2} />
+
+      <div>
+        <Text h1>Usuarios</Text>
+        <SwiperGeneric>
+          {data?.map((user) => (
+            <SwiperSlide key={user.id}>
+              <CardGeneric user={user} />
+            </SwiperSlide>
+          ))}
+        </SwiperGeneric>
+      </div>
+
+      <Spacer y={2} />
+
+      <div>
+        <Text h1>Usuarios</Text>
+        <SwiperGeneric>
+          {data?.map((user) => (
+            <SwiperSlide key={user.id}>
+              <CardGeneric user={user} />
+            </SwiperSlide>
+          ))}
+        </SwiperGeneric>
+      </div>
+
+      <Spacer y={2} />
+
+      <div>
+        <Text h1>Usuarios</Text>
+        <SwiperGeneric>
+          {data?.map((user) => (
+            <SwiperSlide key={user.id}>
+              <CardGeneric user={user} />
+            </SwiperSlide>
+          ))}
+        </SwiperGeneric>
+      </div>
     </div>
   );
 };
